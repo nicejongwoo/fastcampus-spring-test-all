@@ -1,1 +1,3 @@
-rootProject.name = 'fastcampus-board-junit-test-practice'
+rootProject.name = 'fastcampus-spring-test-all'
+include 'board-junit-test'
+
