@@ -37,8 +37,8 @@ public class ArticleController {
         return ArticleDto.ArticleResponse.of(article);
     }
 
-    @GetMapping("boardId")
-    List<ArticleDto.ArticleResponse> listArticlesByBoard(@RequestParam Long boardId) {
+    @GetMapping
+    List<ArticleDto.ArticleResponse> listArticlesByBoard(@RequestParam("boardId") Long boardId) {
         return getArticleUseCase.getArticlesByBoard(boardId).stream()
                 .map(ArticleDto.ArticleResponse::of)
                 .toList();
@@ -57,7 +57,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{articleId}")
-    void deleteArticle(@PathVariable Long articleId) {
+    void deleteArticle(@PathVariable("articleId") Long articleId) {
         deleteArticleUseCase.deleteArticle(articleId);
     }
 }
