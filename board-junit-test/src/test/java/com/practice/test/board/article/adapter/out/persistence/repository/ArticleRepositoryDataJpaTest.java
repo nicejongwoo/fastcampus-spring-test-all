@@ -2,6 +2,7 @@ package com.practice.test.board.article.adapter.out.persistence.repository;
 
 import com.practice.test.board.article.adapter.out.persistence.entity.ArticleJpaEntity;
 import com.practice.test.board.article.adapter.out.persistence.entity.BoardJpaEntity;
+import com.practice.test.board.article.domain.BoardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ class ArticleRepositoryDataJpaTest {
 
     @BeforeEach
     void setUp() {
-        boardJpaEntity = entityManager.persist(new BoardJpaEntity("test"));
+        boardJpaEntity = entityManager.persist(new BoardJpaEntity("test", BoardType.GENERAL));
         entityManager.persist(new ArticleJpaEntity(boardJpaEntity,  "subject1", "content1", "user", LocalDateTime.now()));
         entityManager.persist(new ArticleJpaEntity(boardJpaEntity,  "subject2", "content2", "user", LocalDateTime.now()));
     }

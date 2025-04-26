@@ -5,10 +5,7 @@ import com.practice.test.board.article.adapter.in.api.dto.BoardDto;
 import com.practice.test.board.article.application.port.out.CommandArticlePort;
 import com.practice.test.board.article.application.port.out.LoadArticlePort;
 import com.practice.test.board.article.application.port.out.LoadBoardPort;
-import com.practice.test.board.article.domain.Article;
-import com.practice.test.board.article.domain.ArticleFixtures;
-import com.practice.test.board.article.domain.Board;
-import com.practice.test.board.article.domain.BoardFixtures;
+import com.practice.test.board.article.domain.*;
 import com.practice.test.board.common.exception.AccessDeniedException;
 import com.practice.test.board.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,7 +161,7 @@ public class ArticleServiceTest {
         @DisplayName("변경된 Article 반환")
         void return_ModifiedArticleId (){
             var article = ArticleFixtures.article();
-            var board = new Board(6L, "board");
+            var board = new Board(6L, "board", BoardType.GENERAL);
 
             BDDMockito.given(loadArticlePort.findArticleById(any()))
                     .willReturn(Optional.of(article));

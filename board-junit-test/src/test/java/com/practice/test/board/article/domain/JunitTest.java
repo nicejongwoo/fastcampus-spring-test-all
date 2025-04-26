@@ -32,7 +32,7 @@ public class JunitTest {
     @DisplayName("성공 테스트 - Article 생성")
     void constructArticle() {
         // Arrange
-        var board = new Board(5L, "board");
+        var board = new Board(5L, "board", BoardType.GENERAL);
 
         // Act
         var article = Article.builder()

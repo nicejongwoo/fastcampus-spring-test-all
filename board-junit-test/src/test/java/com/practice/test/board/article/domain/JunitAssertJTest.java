@@ -15,7 +15,7 @@ public class JunitAssertJTest {
 
     @BeforeEach
     void setUp() {
-        board = new Board(5L, "board");
+        board = new Board(5L, "board", BoardType.GENERAL);
     }
 
     @Test

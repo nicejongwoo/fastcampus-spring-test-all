@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class ArticleFixtures {
 
     public static Article article(Long id) {
-        var board = new Board(5L, "board");
+        var board = new Board(5L, "board", BoardType.GENERAL);
 
         return new Article(
                 id,
@@ -21,7 +21,7 @@ public class ArticleFixtures {
     }
 
     public static Article article() {
-        var board = new Board(5L, "board");
+        var board = new Board(5L, "board", BoardType.GENERAL);
 
         return new Article(
                 1L,

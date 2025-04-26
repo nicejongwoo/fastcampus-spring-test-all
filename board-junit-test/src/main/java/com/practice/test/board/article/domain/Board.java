@@ -7,9 +7,11 @@ public class Board {
 
     private Long id;
     private String name;
+    private BoardType boardType;
 
-    public Board(Long id, String name) {
+    public Board(Long id, String name, BoardType boardType) {
         this.id = id;
         this.name = name;
+        this.boardType = boardType;
     }
 }
