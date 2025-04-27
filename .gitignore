@@ -1,6 +1,6 @@
 .gradle
 build/
-!board-junit-test/gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -17,7 +17,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+board-junit-test/.idea
 *.iws
 *.iml
 *.ipr
@@ -34,3 +34,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+.idea
