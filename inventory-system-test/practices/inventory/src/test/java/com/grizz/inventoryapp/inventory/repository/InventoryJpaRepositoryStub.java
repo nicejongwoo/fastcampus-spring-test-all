@@ -19,16 +19,12 @@ public class InventoryJpaRepositoryStub implements InventoryJpaRepository {
 
     @Override
     public @NotNull Optional<InventoryEntity> findByItemId(@NotNull String itemId) {
-        return inventoryEntities.stream()
-                .filter(entity -> entity.getItemId().equals(itemId))
-                .findFirst();
+        return internalFindByItemId(itemId);
     }
 
     @Override
     public @NotNull Integer decreaseStock(@NotNull String itemId, @NotNull Long quantity) {
-        final Optional<InventoryEntity> optionalEntity = inventoryEntities.stream()
-                .filter(entity -> entity.getItemId().equals(itemId))
-                .findFirst();
+        final Optional<InventoryEntity> optionalEntity = internalFindByItemId(itemId);
 
         if (optionalEntity.isEmpty()) {
             return 0;
@@ -60,5 +56,11 @@ public class InventoryJpaRepositoryStub implements InventoryJpaRepository {
         }
 
         return entity;
+    }
+
+    private @NotNull Optional<InventoryEntity> internalFindByItemId(@NotNull String itemId) {
+        return inventoryEntities.stream()
+                .filter(entity -> entity.getItemId().equals(itemId))
+                .findFirst();
     }
 }
