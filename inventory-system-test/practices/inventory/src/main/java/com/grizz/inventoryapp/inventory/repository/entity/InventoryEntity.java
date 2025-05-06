@@ -27,4 +27,8 @@ public class InventoryEntity {
     public void setStock(@NotNull Long stock) {
         this.stock = stock;
     }
+
+    public @Nullable Long getId() {
+        return id;
+    }
 }
