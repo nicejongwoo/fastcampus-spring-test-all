@@ -20,7 +20,11 @@ public class InventoryEntity {
         return itemId;
     }
 
-    public @NotNull Long geStock() {
+    public @NotNull Long getStock() {
         return stock;
+    }
+
+    public void setStock(@NotNull Long stock) {
+        this.stock = stock;
     }
 }

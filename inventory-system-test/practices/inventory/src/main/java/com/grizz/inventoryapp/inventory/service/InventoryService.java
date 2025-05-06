@@ -3,6 +3,9 @@ package com.grizz.inventoryapp.inventory.service;
 import com.grizz.inventoryapp.inventory.repository.InventoryJpaRepository;
 import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
+import com.grizz.inventoryapp.inventory.service.exception.InsufficientStockException;
+import com.grizz.inventoryapp.inventory.service.exception.InvalidDecreaseQuantityException;
+import com.grizz.inventoryapp.inventory.service.exception.ItemNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +25,32 @@ public class InventoryService {
                 .orElse(null);
     }
 
+    public @NotNull Inventory decreaseByItemId(@NotNull String itemId, @NotNull Long quantity) {
+
+        if (quantity < 0) { // quantity 가 음수라면
+            throw new InvalidDecreaseQuantityException();
+        }
+
+        final InventoryEntity inventoryEntity = inventoryJpaRepository.findByItemId(itemId)
+                .orElseThrow(ItemNotFoundException::new);
+
+        if (inventoryEntity.getStock() < quantity) {
+            throw new InsufficientStockException();
+        }
+
+        final Integer updateCount = inventoryJpaRepository.decreaseStock(itemId, quantity);
+        if (updateCount == 0) {
+            throw new ItemNotFoundException();
+        }
+
+        final InventoryEntity updateEntity = inventoryJpaRepository.findByItemId(itemId)
+                .orElseThrow(ItemNotFoundException::new);
+
+        return mapToDomain(updateEntity);
+    }
+
     private Inventory mapToDomain(InventoryEntity entity) {
-        return new Inventory(entity.getItemId(), entity.geStock());
+        return new Inventory(entity.getItemId(), entity.getStock());
     }
 
 }
