@@ -8,3 +8,8 @@ java {
         vendor.set(JvmVendorSpec.ADOPTIUM) // sdk install java 21.0.7-tem
     }
 }
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:_")
+    implementation("io.spring.gradle:dependency-management-plugin:_")
+}
