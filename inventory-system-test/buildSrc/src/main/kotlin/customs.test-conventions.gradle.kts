@@ -18,9 +18,10 @@ tasks.test {
 }
 
 dependencies {
+
     // junit
     testImplementation(Testing.junit.jupiter)
-    testRuntimeOnly(Testing.junit.jupiter.engine)
+    testRuntimeOnly(Testing.junit.jupiter.engine.withoutVersion()) // Spring.boot.test 하고 버전 충돌 방지
 
     // mockito
     testImplementation(Testing.mockito.core)
@@ -29,7 +30,8 @@ dependencies {
     // 조건에 따른 테스트 의존성 추가
     project.afterEvaluate {
         if (project.pluginManager.hasPlugin("customs.spring-conventions")) {
-            testImplementation(Spring.boot.test)
+            testImplementation(Spring.boot.test).apply {  }
         }
     }
+
 }
