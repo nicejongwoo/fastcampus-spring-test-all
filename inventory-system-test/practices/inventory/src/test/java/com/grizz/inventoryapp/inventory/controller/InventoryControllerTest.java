@@ -1,8 +1,8 @@
 package com.grizz.inventoryapp.inventory.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.grizz.inventoryapp.common.GlobalExceptionHandler;
+import com.grizz.inventoryapp.config.JsonConfig;
 import com.grizz.inventoryapp.controller.InventoryController;
 import com.grizz.inventoryapp.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.service.InventoryService;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,7 +24,8 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(InventoryController.class)
+@Import(JsonConfig.class)
+@WebMvcTest({InventoryController.class, GlobalExceptionHandler.class})
 public class InventoryControllerTest {
 
     @MockitoBean
@@ -32,9 +34,7 @@ public class InventoryControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("재고 조회")
     @Nested
