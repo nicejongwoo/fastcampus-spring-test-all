@@ -1,12 +1,12 @@
 package com.grizz.inventoryapp.inventory.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grizz.inventoryapp.common.GlobalExceptionHandler;
 import com.grizz.inventoryapp.config.JsonConfig;
 import com.grizz.inventoryapp.controller.InventoryController;
 import com.grizz.inventoryapp.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.service.InventoryService;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
+import com.grizz.inventoryapp.test.assertion.Assertions;
 import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
 import com.grizz.inventoryapp.test.fixture.InventoryFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,8 +33,6 @@ public class InventoryControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("재고 조회")
     @Nested
@@ -53,14 +51,7 @@ public class InventoryControllerTest {
                     .andReturn();
 
             // then
-            final String content = result.getResponse().getContentAsString();
-            final var responseBody = objectMapper.readTree(content);
-            final var errorField = responseBody.get("error");
-
-            assertNotNull(errorField);
-            assertTrue(errorField.isObject());
-            assertEquals(ErrorCodes.ITEM_NOT_FOUND.code, errorField.get("code").asLong());
-            assertEquals(ErrorCodes.ITEM_NOT_FOUND.message, errorField.get("local_message").asText());
+            Assertions.assertMvcErrorEquals(result, ErrorCodes.ITEM_NOT_FOUND);
 
             verify(inventoryService).findByItemId(itemId);
         }
@@ -78,14 +69,10 @@ public class InventoryControllerTest {
                     .andReturn();
 
             // then
-            final String content = result.getResponse().getContentAsString();
-            final var responseBody = objectMapper.readTree(content);
-            final var dataField = responseBody.get("data");
-
-            assertNotNull(dataField);
-            assertTrue(dataField.isObject());
-            assertEquals(inventory.getItemId(), dataField.get("item_id").asText());
-            assertEquals(inventory.getStock(), dataField.get("stock").asLong());
+            Assertions.assertMvcDataEquals(result, dataField -> {
+                assertEquals(inventory.getItemId(), dataField.get("item_id").asText());
+                assertEquals(inventory.getStock(), dataField.get("stock").asInt());
+            });
 
             verify(inventoryService).findByItemId(itemId);
 
