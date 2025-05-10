@@ -4,11 +4,13 @@ import com.grizz.inventoryapp.common.ApiResponse;
 import com.grizz.inventoryapp.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.controller.dto.DecreaseQuantityRequest;
 import com.grizz.inventoryapp.controller.dto.InventoryResponse;
+import com.grizz.inventoryapp.controller.dto.UpdateStockRequest;
 import com.grizz.inventoryapp.controller.exeption.CommonInventoryHttpException;
 import com.grizz.inventoryapp.inventory.service.InventoryService;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import com.grizz.inventoryapp.inventory.service.exception.InsufficientStockException;
 import com.grizz.inventoryapp.inventory.service.exception.InvalidDecreaseQuantityException;
+import com.grizz.inventoryapp.inventory.service.exception.InvalidStockException;
 import com.grizz.inventoryapp.inventory.service.exception.ItemNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +54,24 @@ public class InventoryController {
         }
 
        return ApiResponse.just(InventoryResponse.fromDomain(inventory));
+    }
+
+    @PatchMapping("/{itemId}/stock")
+    ApiResponse<InventoryResponse> updateStock(
+        @PathVariable("itemId") String itemId,
+        @RequestBody UpdateStockRequest request
+    ) {
+        Inventory inventory;
+
+        try {
+            inventory = inventoryService.updateStock(itemId, request.stock());
+        } catch (ItemNotFoundException e) {
+            throw new CommonInventoryHttpException(ErrorCodes.ITEM_NOT_FOUND, HttpStatus.NOT_FOUND);
+        } catch (InvalidStockException e) {
+            throw new CommonInventoryHttpException(ErrorCodes.INVALID_STOCK, HttpStatus.BAD_REQUEST);
+        }
+
+        return ApiResponse.just(InventoryResponse.fromDomain(inventory));
     }
 
 }
