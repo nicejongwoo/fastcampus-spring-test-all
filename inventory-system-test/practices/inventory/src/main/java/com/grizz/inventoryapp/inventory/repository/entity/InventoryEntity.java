@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.ZonedDateTime;
+
 @Table(name = "inventory")
 @Entity
 public class InventoryEntity {
@@ -12,6 +14,9 @@ public class InventoryEntity {
     private @Nullable Long id;
     private @NotNull String itemId;
     private @NotNull Long stock;
+
+    private @Nullable ZonedDateTime createdAt;
+    private @Nullable ZonedDateTime updatedAt;
 
     public InventoryEntity(@Nullable Long id,
                            @NotNull String itemId,
@@ -38,5 +43,13 @@ public class InventoryEntity {
 
     public @Nullable Long getId() {
         return id;
+    }
+
+    public @Nullable ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public @Nullable ZonedDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

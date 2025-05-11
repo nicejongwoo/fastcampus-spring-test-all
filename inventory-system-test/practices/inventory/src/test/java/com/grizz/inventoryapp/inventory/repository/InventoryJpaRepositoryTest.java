@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +74,10 @@ public class InventoryJpaRepositoryTest {
         @DisplayName("itemId를 갖는 entity가 있다면, stock을 차감하고 1을 반환한다.")
         @Test
         void test2() {
+            // given
+            final ZonedDateTime lastUpdatedAt = sut.findByItemId(existingItemId)
+                    .get().getUpdatedAt();
+
             // when
             final Integer result = sut.decreaseStock(existingItemId, 10L);
 
@@ -82,6 +87,7 @@ public class InventoryJpaRepositoryTest {
             final InventoryEntity entity = sut.findByItemId(existingItemId).get();
             final Long expectedStock = stock - 10L;
             assertEquals(expectedStock, entity.getStock());
+            assertNotEquals(lastUpdatedAt, entity.getUpdatedAt());
         }
     }
 
@@ -107,6 +113,8 @@ public class InventoryJpaRepositoryTest {
             assertNotNull(result.getId());
             assertEquals(nonExistingItemId, result.getItemId());
             assertEquals(newStock, result.getStock());
+            assertNotNull(result.getCreatedAt());
+            assertNotNull(result.getUpdatedAt());
         }
 
         @DisplayName("id를 갖는 entity가 있다면, entity를 수정하고 추가된 entity를 반환한다.")
@@ -115,6 +123,7 @@ public class InventoryJpaRepositoryTest {
             // given
             final Long newStock = 1234L;
             final InventoryEntity entity = sut.findByItemId(existingItemId).get();
+            ZonedDateTime lastUpdatedAt = entity.getUpdatedAt();
 
             // when
             entity.setStock(newStock);
@@ -124,6 +133,9 @@ public class InventoryJpaRepositoryTest {
             assertEquals(1L, result.getId());
             assertEquals(existingItemId, result.getItemId());
             assertEquals(newStock, result.getStock());
+            assertNotNull(result.getCreatedAt());
+            assertNotNull(result.getUpdatedAt());
+            assertNotEquals(lastUpdatedAt, result.getUpdatedAt());
         }
     }
 
