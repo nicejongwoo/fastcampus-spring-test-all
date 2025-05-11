@@ -13,7 +13,7 @@ public interface InventoryJpaRepository extends JpaRepository<InventoryEntity, L
     @NotNull Optional<InventoryEntity> findByItemId(@NotNull String itemId);
 
     @Modifying
-    @Query("update InventoryEntity i set i.stock = i.stock - :quantity " +
+    @Query("update InventoryEntity i set i.stock = i.stock - :quantity, i.updatedAt = instant " +
             "where i.itemId = :itemId")
     @NotNull Integer decreaseStock(@NotNull @Param("itemId") String itemId,
                                    @NotNull @Param("quantity") Long quantity);

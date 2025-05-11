@@ -1,14 +1,15 @@
 package com.grizz.inventoryapp.inventory.repository;
 
+import com.grizz.inventoryapp.config.JpaConfig;
 import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
-import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.ZonedDateTime;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Import(JpaConfig.class)
 @ActiveProfiles("h2-test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
@@ -23,6 +25,9 @@ public class InventoryJpaRepositoryTest {
 
     @Autowired
     InventoryJpaRepository sut; // system under test
+
+    @Autowired
+    TestEntityManager entityManager;
 
     @Nested
     class FindByItemId {
@@ -80,6 +85,7 @@ public class InventoryJpaRepositoryTest {
 
             // when
             final Integer result = sut.decreaseStock(existingItemId, 10L);
+            entityManager.clear();
 
             // then
             assertEquals(1, result);
@@ -128,6 +134,7 @@ public class InventoryJpaRepositoryTest {
             // when
             entity.setStock(newStock);
             final InventoryEntity result = sut.save(entity);
+            entityManager.flush();
 
             // then
             assertEquals(1L, result.getId());
