@@ -17,6 +17,4 @@ public interface InventoryJpaRepository extends JpaRepository<InventoryEntity, L
             "where i.itemId = :itemId")
     @NotNull Integer decreaseStock(@NotNull @Param("itemId") String itemId,
                                    @NotNull @Param("quantity") Long quantity);
-
-    @NotNull InventoryEntity save(@NotNull InventoryEntity entity);
 }

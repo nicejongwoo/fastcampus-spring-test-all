@@ -87,16 +87,43 @@ public class InventoryJpaRepositoryTest {
 
     @Nested
     class Save {
+        final Long existingId = 1L;
+        final String existingItemId = "1";
+        final String nonExistingItemId = "2";
+
         @DisplayName("id를 갖는 entity가 없다면, entity를 추가하고 추가된 entity를 반환한다.")
         @Test
         void test1() {
-            throw new NotImplementedTestException();
+            // given
+            final Long newStock = 1234L;
+
+            // when
+            final InventoryEntity entity = new InventoryEntity(null,
+                    nonExistingItemId,
+                    newStock);
+            final InventoryEntity result = sut.save(entity);
+
+            // then
+            assertNotNull(result.getId());
+            assertEquals(nonExistingItemId, result.getItemId());
+            assertEquals(newStock, result.getStock());
         }
 
         @DisplayName("id를 갖는 entity가 있다면, entity를 수정하고 추가된 entity를 반환한다.")
         @Test
         void test2() {
-            throw new NotImplementedTestException();
+            // given
+            final Long newStock = 1234L;
+            final InventoryEntity entity = sut.findByItemId(existingItemId).get();
+
+            // when
+            entity.setStock(newStock);
+            final InventoryEntity result = sut.save(entity);
+
+            // then
+            assertEquals(1L, result.getId());
+            assertEquals(existingItemId, result.getItemId());
+            assertEquals(newStock, result.getStock());
         }
     }
 
