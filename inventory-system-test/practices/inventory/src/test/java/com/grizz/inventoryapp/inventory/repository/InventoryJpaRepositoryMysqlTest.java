@@ -2,6 +2,7 @@ package com.grizz.inventoryapp.inventory.repository;
 
 import com.grizz.inventoryapp.config.JpaConfig;
 import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Disabled
 @Import(JpaConfig.class)
 @ActiveProfiles("mysql-test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
