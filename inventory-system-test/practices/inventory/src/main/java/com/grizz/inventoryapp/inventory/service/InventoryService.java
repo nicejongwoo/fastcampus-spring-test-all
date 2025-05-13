@@ -10,6 +10,7 @@ import com.grizz.inventoryapp.inventory.service.exception.ItemNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class InventoryService {
                 .orElse(null);
     }
 
+    @Transactional
     public @NotNull Inventory decreaseByItemId(@NotNull String itemId, @NotNull Long quantity) {
 
         if (quantity < 0) { // quantity 가 음수라면

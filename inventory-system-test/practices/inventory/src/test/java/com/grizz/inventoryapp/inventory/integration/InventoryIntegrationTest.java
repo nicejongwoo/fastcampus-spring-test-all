@@ -83,9 +83,6 @@ public class InventoryIntegrationTest {
         final Long quantity = 10L;
         final String requestBody = String.format("{\"quantity\": %d}", quantity);
 
-        // Caused by: jakarta.persistence.TransactionRequiredException: Executing an update/delete query
-        //	at org.hibernate.internal.AbstractSharedSessionContract.checkTransactionNeededForUpdateOperation(AbstractSharedSessionContract.java:560)
-        //	at org.hibernate.query.sqm.internal.QuerySqmImpl.executeUpdate(QuerySqmImpl.java:489)
         mockMvc.perform(
                         post("/api/v1/inventory/{itemId}/decrease", existingItemId)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,17 +90,7 @@ public class InventoryIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.item_id").value(existingItemId))
                 .andExpect(jsonPath("$.data.stock").value(90L));
-        /*
-        MockHttpServletResponse:
-                   Status = 200
-            Error message = null
-                  Headers = [Content-Type:"application/json"]
-             Content type = application/json
-                     Body = {"data":{"item_id":"1","stock":100},"error":null}
-            Forwarded URL = null
-           Redirected URL = null
-                  Cookies = []
-         */
+
         // 3. 재고를 조회하고 90개인 것을 확인한다.
         successGetStock(existingItemId, 90L);
     }

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface InventoryJpaRepository extends JpaRepository<InventoryEntity, Long> {
     @NotNull Optional<InventoryEntity> findByItemId(@NotNull String itemId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update InventoryEntity i set i.stock = i.stock - :quantity, i.updatedAt = instant " +
             "where i.itemId = :itemId")
     @NotNull Integer decreaseStock(@NotNull @Param("itemId") String itemId,
