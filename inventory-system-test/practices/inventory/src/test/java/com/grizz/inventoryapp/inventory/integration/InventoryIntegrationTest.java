@@ -13,8 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,8 +96,24 @@ public class InventoryIntegrationTest {
 
     @DisplayName("재고 수정 실패")
     @Test
-    void test5() {
-        throw new NotImplementedTestException();
+    void test5() throws Exception {
+        // 1. 재고를 조회하고 100개인 것을 확인한다.
+        successGetStock(existingItemId, stock);
+
+        // 2. 재고 -100개를 차감하고 실패한다.
+        final Long quantity = -100L;
+        final String requestBody = String.format("{\"stock\": %d}", quantity);
+
+        mockMvc.perform(
+                        patch("/api/v1/inventory/{itemId}/stock", existingItemId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error.code").value(ErrorCodes.INVALID_STOCK.code))
+                .andExpect(jsonPath("$.error.local_message").value(ErrorCodes.INVALID_STOCK.message));
+
+        // 3. 재고를 조회하고 100개인 것을 확인한다.
+        successGetStock(existingItemId, 100L);
     }
 
     @DisplayName("재고 수정 성공")
