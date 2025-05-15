@@ -9,14 +9,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Testcontainers
 @Transactional
 @ActiveProfiles("integration-test2") // test 용 컨테이너 사용
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 테스트 환경에서 h2 데이터베이스를 자동으로 사용하지 않도록 설정
@@ -30,6 +36,22 @@ public class AnnotationInventoryIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Container
+    private static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.3")
+            .withDatabaseName("inventory")
+            .withUsername("root")
+            .withPassword("root")
+            .withUrlParam("serverTimezone", "UTC")
+            .withUrlParam("useSSL", "false")
+            .withUrlParam("allowPublicKeyRetrieval", "true");
+
+    @DynamicPropertySource
+    static void setDatasourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+    }
 
     final String existingItemId = "1";
     final String nonExistingItemId = "2";
