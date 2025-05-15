@@ -140,8 +140,41 @@ public class InventoryIntegrationTest {
 
     @DisplayName("재고 차감, 수정 종합")
     @Test
-    void test7() {
-        throw new NotImplementedTestException();
+    void test7() throws Exception {
+        // 1. 재고를 조회하고 100개인 것을 확인한다.
+        long expectedStock = 100L;
+        successGetStock(existingItemId, expectedStock);
+
+        // 2. 재고를 10개 차감을 7번 반복하고 성공한다.
+        final Long quantity = 10L;
+        for (int i = 0; i < 7; i++) {
+            expectedStock -= quantity;
+            final String requestBody = String.format("{\"quantity\": %d}", quantity);
+            mockMvc.perform(
+                            post("/api/v1/inventory/{itemId}/decrease", existingItemId)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(requestBody))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.item_id").value(existingItemId))
+                    .andExpect(jsonPath("$.data.stock").value(expectedStock));
+        }
+
+        // 3. 재고를 조회하고 30개인 것을 확인한다.
+        successGetStock(existingItemId, 30L);
+
+        // 4. 재고를 500개로 수정하고 성공한다.
+        long newStock = 500L;
+        final String requestBody = String.format("{\"stock\": %d}", newStock);
+        mockMvc.perform(
+                        patch("/api/v1/inventory/{itemId}/stock", existingItemId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.item_id").value(existingItemId))
+                .andExpect(jsonPath("$.data.stock").value(newStock));
+
+        // 5. 재고를 조회하고 500개인 것을 확인한다.
+        successGetStock(existingItemId, newStock);
     }
 
     private void successGetStock(String itemId, Long stock) throws Exception {
