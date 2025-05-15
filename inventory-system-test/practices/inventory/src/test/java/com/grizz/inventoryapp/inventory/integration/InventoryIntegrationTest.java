@@ -12,16 +12,18 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 @ActiveProfiles("integration-test") // test 용 컨테이너 사용
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 테스트 환경에서 h2 데이터베이스를 자동으로 사용하지 않도록 설정
 @Sql(
         scripts = {"classpath:schema.sql", "classpath:data.sql"}, // 순서 중요
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD // 테스트 실행 전 스키마와 데이터를 로드
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS // 테스트 실행 전 스키마와 데이터를 로드
 )
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
