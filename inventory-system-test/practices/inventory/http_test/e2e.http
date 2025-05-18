@@ -86,3 +86,23 @@ Content-Type: application/json
 %}
 
 ### 재고 수정 성공
+< {%
+    const newStock = "500"; // 수정할 재고
+    request.variables.set("newStock", newStock);
+%}
+
+PATCH {{restUrl}}/api/v1/inventory/{{existingItemId}}/stock
+Content-Type: application/json
+
+{
+  "stock": {{newStock}}
+}
+
+> {%
+    import { assertE2eDataEquals } from './script/assertions'
+
+    const existingItemId = request.environment.get("existingItemId"); // 기존 아이템 ID
+    const expectedStock = parseInt(request.variables.get("newStock")); // 수정할 재고
+
+    assertE2eDataEquals(existingItemId, expectedStock);
+%}
