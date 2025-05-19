@@ -41,6 +41,7 @@
         
         subgraph core
             Service
+        end
       end
     end
 
