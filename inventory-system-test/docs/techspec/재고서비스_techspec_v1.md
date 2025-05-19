@@ -33,7 +33,15 @@
       direction LR
       Tomcat --> Controller
       Controller --> Service
-      Service --> Repository
+      Repository -->Service
+      
+      subgraph adapter
+        Controller
+        Repository
+        
+        subgraph core
+            Service
+      end
     end
 
     Repository --> MySQL
