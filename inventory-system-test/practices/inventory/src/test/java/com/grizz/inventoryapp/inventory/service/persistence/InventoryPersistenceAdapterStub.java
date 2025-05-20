@@ -1,6 +1,5 @@
 package com.grizz.inventoryapp.inventory.service.persistence;
 
-import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +37,27 @@ public class InventoryPersistenceAdapterStub implements InventoryPersistenceAdap
         inventory.setStock(newStock);
 
         return inventory;
+    }
+
+    @Override
+    public @NotNull Inventory save(Inventory inventory) {
+        final Long entityId = inventory.getId();
+        Optional<Inventory> optionalInventory = inventoryList.stream()
+                .filter(entity -> entity.getId() != null && entity.getId().equals(entityId))
+                .findFirst();
+
+        Inventory entityToSave;
+
+        if (optionalInventory.isPresent()) {
+            entityToSave = optionalInventory.get();
+            entityToSave.setStock(inventory.getStock());
+        } else {
+            final Long id = idGenerator.getAndIncrement();
+            entityToSave = new Inventory(id, inventory.getItemId(), inventory.getStock());
+            inventoryList.add(entityToSave);
+        }
+
+        return entityToSave;
     }
 
     private @NotNull Optional<Inventory> internalFindByItemId(@NotNull String itemId) {

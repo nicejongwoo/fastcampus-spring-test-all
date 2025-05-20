@@ -17,6 +17,10 @@ public class Inventory {
         this.stock = stock;
     }
 
+    public @Nullable Long getId() {
+        return id;
+    }
+
     public @NotNull String getItemId() {
         return itemId;
     }

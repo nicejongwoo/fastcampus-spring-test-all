@@ -8,4 +8,6 @@ public interface InventoryPersistenceAdapter {
     @Nullable Inventory decreaseStock(@NotNull String itemId, @NotNull Long quantity);
 
     @Nullable Inventory findByItemId(@NotNull String itemId);
+
+    @NotNull Inventory save(Inventory inventory);
 }
