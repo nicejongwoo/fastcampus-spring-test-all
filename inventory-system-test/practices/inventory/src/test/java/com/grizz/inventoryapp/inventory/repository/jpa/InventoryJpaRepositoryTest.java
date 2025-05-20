@@ -1,4 +1,4 @@
-package com.grizz.inventoryapp.inventory.repository;
+package com.grizz.inventoryapp.inventory.repository.jpa;
 
 import com.grizz.inventoryapp.config.JpaConfig;
 import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
