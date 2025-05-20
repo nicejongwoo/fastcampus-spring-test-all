@@ -113,7 +113,6 @@ public class InventoryServiceTest {
             });
         }
 
-
         @DisplayName("변경된 entity가 없다면, Exception을 throw한다")
         @Test
         void test4() {
@@ -121,7 +120,7 @@ public class InventoryServiceTest {
             final Long quantity = 10L;
 
             // 업데이트되는 최종 결과가 무조건 0을 반환하도록 stubbing(mocking) 한다.(업데이트가 안되는 결과를 가정)
-            doReturn(0).when(inventoryAdapter).decreaseStock(existingItemId, quantity);
+            doReturn(null).when(inventoryAdapter).decreaseStock(existingItemId, quantity);
 
             // when & then
             assertThrows(ItemNotFoundException.class, () -> {

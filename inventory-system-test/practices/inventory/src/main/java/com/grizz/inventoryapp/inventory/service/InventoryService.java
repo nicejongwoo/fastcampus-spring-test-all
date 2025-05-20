@@ -9,6 +9,7 @@ import com.grizz.inventoryapp.inventory.service.exception.ItemNotFoundException;
 import com.grizz.inventoryapp.inventory.service.persistence.InventoryPersistenceAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class InventoryService {
 
     private final InventoryPersistenceAdapter inventoryAdapter;
+    private final DateTimeProvider auditDateTimeProvider;
 
-    public InventoryService(InventoryPersistenceAdapter inventoryAdapter) {
+    public InventoryService(InventoryPersistenceAdapter inventoryAdapter, DateTimeProvider auditDateTimeProvider) {
         this.inventoryAdapter = inventoryAdapter;
+        this.auditDateTimeProvider = auditDateTimeProvider;
     }
 
     public @Nullable Inventory findByItemId(@NotNull String itemId) {
@@ -27,28 +30,32 @@ public class InventoryService {
 
     @Transactional
     public @NotNull Inventory decreaseByItemId(@NotNull String itemId, @NotNull Long quantity) {
+        if (quantity < 0) { // quantity 가 음수라면
+            throw new InvalidDecreaseQuantityException();
+        }
 
-//        if (quantity < 0) { // quantity 가 음수라면
-//            throw new InvalidDecreaseQuantityException();
-//        }
-//
-//        final InventoryEntity inventoryEntity = inventoryJpaRepository.findByItemId(itemId)
-//                .orElseThrow(ItemNotFoundException::new);
-//
-//        if (inventoryEntity.getStock() < quantity) {
-//            throw new InsufficientStockException();
-//        }
-//
-//        final Integer updateCount = inventoryJpaRepository.decreaseStock(itemId, quantity);
-//        if (updateCount == 0) {
-//            throw new ItemNotFoundException();
-//        }
-//
-//        final InventoryEntity updateEntity = inventoryJpaRepository.findByItemId(itemId)
-//                .orElseThrow(ItemNotFoundException::new);
-//
-//        return mapToDomain(updateEntity);
-        return null;
+        final Inventory inventory = inventoryAdapter.findByItemId(itemId);
+
+        if (inventory == null) {
+            throw new ItemNotFoundException();
+        }
+
+        if (inventory.getStock() < quantity) {
+            throw new InsufficientStockException();
+        }
+
+        final Inventory updateCount = inventoryAdapter.decreaseStock(itemId, quantity);
+        if (updateCount == null) {
+            throw new ItemNotFoundException();
+        }
+
+        final Inventory updatedInventory = inventoryAdapter.findByItemId(itemId);
+
+        if (updatedInventory == null) {
+            throw new ItemNotFoundException();
+        }
+
+        return updatedInventory;
     }
 
     public @NotNull Inventory updateStock(@NotNull String itemId, @NotNull Long stock) {

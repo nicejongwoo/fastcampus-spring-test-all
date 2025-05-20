@@ -1,5 +1,6 @@
 package com.grizz.inventoryapp.inventory.service.persistence;
 
+import com.grizz.inventoryapp.inventory.repository.entity.InventoryEntity;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +27,17 @@ public class InventoryPersistenceAdapterStub implements InventoryPersistenceAdap
 
     @Override
     public @Nullable Inventory decreaseStock(@NotNull String itemId, @NotNull Long quantity) {
-        return null;
+        final Optional<Inventory> optionalEntity = internalFindByItemId(itemId);
+
+        if (optionalEntity.isEmpty()) {
+            return null;
+        }
+
+        final Inventory inventory = optionalEntity.get();
+        final Long newStock = inventory.getStock() - quantity;
+        inventory.setStock(newStock);
+
+        return inventory;
     }
 
     private @NotNull Optional<Inventory> internalFindByItemId(@NotNull String itemId) {
