@@ -1,4 +1,4 @@
-package com.grizz.inventoryapp.controller.consts;
+package com.grizz.inventoryapp.inventory.controller.consts;
 
 import org.jetbrains.annotations.NotNull;
 

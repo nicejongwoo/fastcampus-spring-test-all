@@ -2,8 +2,7 @@ package com.grizz.inventoryapp.inventory.controller;
 
 import com.grizz.inventoryapp.common.GlobalExceptionHandler;
 import com.grizz.inventoryapp.config.JsonConfig;
-import com.grizz.inventoryapp.controller.InventoryController;
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.service.InventoryService;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import com.grizz.inventoryapp.inventory.service.exception.InsufficientStockException;

@@ -1,7 +1,6 @@
 package com.grizz.inventoryapp.inventory.integration;
 
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
-import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

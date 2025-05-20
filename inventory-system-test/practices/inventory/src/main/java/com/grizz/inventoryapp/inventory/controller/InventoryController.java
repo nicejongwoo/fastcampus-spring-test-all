@@ -1,11 +1,11 @@
-package com.grizz.inventoryapp.controller;
+package com.grizz.inventoryapp.inventory.controller;
 
 import com.grizz.inventoryapp.common.ApiResponse;
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
-import com.grizz.inventoryapp.controller.dto.DecreaseQuantityRequest;
-import com.grizz.inventoryapp.controller.dto.InventoryResponse;
-import com.grizz.inventoryapp.controller.dto.UpdateStockRequest;
-import com.grizz.inventoryapp.controller.exeption.CommonInventoryHttpException;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
+import com.grizz.inventoryapp.inventory.controller.dto.DecreaseQuantityRequest;
+import com.grizz.inventoryapp.inventory.controller.dto.InventoryResponse;
+import com.grizz.inventoryapp.inventory.controller.dto.UpdateStockRequest;
+import com.grizz.inventoryapp.inventory.controller.exeption.CommonInventoryHttpException;
 import com.grizz.inventoryapp.inventory.service.InventoryService;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import com.grizz.inventoryapp.inventory.service.exception.InsufficientStockException;

@@ -3,7 +3,7 @@ package com.grizz.inventoryapp.test.assertion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.UnsupportedEncodingException;

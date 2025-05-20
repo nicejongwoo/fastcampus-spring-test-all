@@ -1,6 +1,6 @@
-package com.grizz.inventoryapp.controller.exeption;
+package com.grizz.inventoryapp.inventory.controller.exeption;
 
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 

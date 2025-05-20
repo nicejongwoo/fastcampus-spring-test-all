@@ -18,4 +18,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
+
+    // archUnit
+    testImplementation("com.tngtech.archunit:archunit-junit5:_")
 }

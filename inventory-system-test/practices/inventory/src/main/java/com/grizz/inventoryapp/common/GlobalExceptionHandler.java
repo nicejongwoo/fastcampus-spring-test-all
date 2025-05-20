@@ -1,6 +1,6 @@
 package com.grizz.inventoryapp.common;
 
-import com.grizz.inventoryapp.controller.exeption.CommonInventoryHttpException;
+import com.grizz.inventoryapp.inventory.controller.exeption.CommonInventoryHttpException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

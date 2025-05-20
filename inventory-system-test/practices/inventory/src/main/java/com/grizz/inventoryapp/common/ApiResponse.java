@@ -1,6 +1,6 @@
 package com.grizz.inventoryapp.common;
 
-import com.grizz.inventoryapp.controller.consts.ErrorCodes;
+import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import org.jetbrains.annotations.Nullable;
 
 public record ApiResponse<T>(
