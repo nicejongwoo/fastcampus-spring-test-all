@@ -22,10 +22,7 @@ public class InventoryService {
     }
 
     public @Nullable Inventory findByItemId(@NotNull String itemId) {
-//        return inventoryJpaRepository.findByItemId(itemId)
-//                .map(this::mapToDomain)
-//                .orElse(null);
-        return null;
+        return inventoryAdapter.findByItemId(itemId);
     }
 
     @Transactional
