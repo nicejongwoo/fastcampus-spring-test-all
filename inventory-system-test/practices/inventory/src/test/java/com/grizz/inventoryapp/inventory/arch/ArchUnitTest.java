@@ -49,7 +49,7 @@ public class ArchUnitTest {
     void test3() {
         final ArchRule rule = baseRule
                 .whereLayer("Repository").mayNotBeAccessedByAnyLayer()
-                .whereLayer("Service").mayOnlyAccessLayers("Service");
+                .whereLayer("Repository").mayOnlyAccessLayers("Service");
 
         rule.check(targetClasses);
     }
