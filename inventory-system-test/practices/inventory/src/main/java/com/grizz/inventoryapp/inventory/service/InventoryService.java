@@ -73,8 +73,4 @@ public class InventoryService {
         return inventoryAdapter.save(inventory);
     }
 
-//    private Inventory mapToDomain(InventoryEntity entity) {
-//        return new Inventory(entity.getItemId(), entity.getStock());
-//    }
-
 }
