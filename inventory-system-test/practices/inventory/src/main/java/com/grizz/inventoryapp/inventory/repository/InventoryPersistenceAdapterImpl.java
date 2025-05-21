@@ -23,13 +23,9 @@ public class InventoryPersistenceAdapterImpl implements InventoryPersistenceAdap
             return null;
         }
 
-        final InventoryEntity entity = inventoryJpaRepository.findByItemId(itemId).orElse(null);
-
-        if (entity == null) {
-            return null;
-        }
-
-        return mapToDomain(entity);
+        return inventoryJpaRepository.findByItemId(itemId)
+                .map(this::mapToDomain)
+                .orElse(null);
     }
 
     @Override
