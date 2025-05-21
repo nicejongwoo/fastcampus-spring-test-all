@@ -41,7 +41,23 @@ public class InventoryPersistenceAdapterImpl implements InventoryPersistenceAdap
 
     @Override
     public @NotNull Inventory save(Inventory inventory) {
-        return null;
+        InventoryEntity entity = null;
+
+        if (inventory.getId() != null) {
+            entity = inventoryJpaRepository.findById(inventory.getId()).orElse(null);
+        }
+
+        if (entity == null) {
+            entity = mapToEntity(inventory);
+        }
+
+        entity.setStock(inventory.getStock());
+
+        return mapToDomain(inventoryJpaRepository.save(entity));
+    }
+
+    private @NotNull InventoryEntity mapToEntity(@NotNull Inventory inventory) {
+        return new InventoryEntity(inventory.getId(), inventory.getItemId(), inventory.getStock());
     }
 
     private @NotNull Inventory mapToDomain(@NotNull InventoryEntity entity) {
