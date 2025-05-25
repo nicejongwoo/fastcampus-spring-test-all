@@ -31,7 +31,6 @@ https://jmeter-plugins.org/wiki/PluginsManager
 ## JMeter GetStock 부하 테스트
 - Test Plan > Name: GetStock > Save > practice/inventory/load_test/GetStock.jmx
 - GetStock > Add > Threads(Users) > Thread Group
-  - 
   - GetStock > Add > Timer > Constant Timer
   - GetStock > Add > Sampler > HTTP Request
   - GetStock > Add > Listener > View Results Tree
@@ -40,3 +39,13 @@ https://jmeter-plugins.org/wiki/PluginsManager
   - GetStock > Add > Listener > jp@gc - Transaction per Second
   - GetStock > Add > Assertions > JSON Assertion
   - GetStock > Add > Assertions > Response Assertion
+
+## JMeter DecreaseStock 부하 테스트
+- 테스트의 결과를 확인하기 위해 파일로 저장을 하려고 함
+- JMeter를 현재 프로젝트를 기준으로 실행해야 함 (inventory-system-test 폴더에서 `./apache-jmeter-x.x.x/bin/jmeter` 실행)
+- GetStock.jmx를 DecreaseStockV1.jmx로 복사
+- 실행된 JMeter에서 DecreaseStockV1.jmx 파일을 열기
+- GetStock > Add > Threads(Users) > Thread Group
+  - GetStock > Add > Config Element > HTTP Header Manager
+  - GetStock > Add > Post Processors > JSON Extractor   ![img.png](image/01_json_extractor.png)
+  - GetStock > Add > Post Processors > JSR223 PostProcessor   ![img_3.png](image/02_jsr223_post_processor.png)   ![img_2.png](image/03_find-duplicate-directory.png)
