@@ -42,3 +42,5 @@ bin/
 .DS_Store
 
 **/db_data
+
+jmeter.log
