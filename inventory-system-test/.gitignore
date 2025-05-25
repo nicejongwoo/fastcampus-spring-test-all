@@ -44,3 +44,5 @@ bin/
 **/db_data
 
 jmeter.log
+
+apache-jmeter-5.6.3
