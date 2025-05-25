@@ -1,6 +1,7 @@
 package com.grizz.inventoryapp.inventory.repository;
 
 import com.grizz.inventoryapp.inventory.repository.jpa.InventoryJpaRepositoryStub;
+import com.grizz.inventoryapp.inventory.repository.redis.InventoryRedisRepositoryStub;
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
 import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
 import org.junit.Before;
@@ -24,6 +25,9 @@ class InventoryPersistenceAdapterImplTest {
     @Spy
     InventoryJpaRepositoryStub inventoryJpaRepositoryStub;
 
+    @Spy
+    InventoryRedisRepositoryStub inventoryRedisRepositoryStub;
+
     @Nested
     class FindByItemId {
         final String existingItemId = "1";
@@ -34,6 +38,7 @@ class InventoryPersistenceAdapterImplTest {
         void setUp() {
             // Assuming there is a method to add inventory for testing
             inventoryJpaRepositoryStub.addInventoryEntity(existingItemId, stock);
+            inventoryRedisRepositoryStub.addStock(existingItemId, stock);
         }
 
         @DisplayName("itemId를 갖는 entity가 없다면, null을 반환한다")
@@ -70,6 +75,7 @@ class InventoryPersistenceAdapterImplTest {
         void setUp() {
             // Assuming there is a method to add inventory for testing
             inventoryJpaRepositoryStub.addInventoryEntity(existingItemId, stock);
+            inventoryRedisRepositoryStub.addStock(existingItemId, stock);
         }
 
         @DisplayName("itemId를 갖는 entity가 없다면, null을 반환한다")
@@ -106,6 +112,7 @@ class InventoryPersistenceAdapterImplTest {
         void setUp() {
             // Assuming there is a method to add inventory for testing
             inventoryJpaRepositoryStub.addInventoryEntity(existingItemId, oldStock);
+            inventoryRedisRepositoryStub.addStock(existingItemId, oldStock);
         }
 
         @DisplayName("id를 갖는 entity가 없다면, entity를 추가하고 추가된 inventory를 반환한다")
