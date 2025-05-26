@@ -68,6 +68,7 @@ class InventoryPersistenceAdapterImplTest {
         final String existingItemId = "1";
         final String nonExistingItemId = "2";
         final Long stock = 100L;
+        final Long quantity = 10L;
 
         @BeforeEach
         void setUp() {
@@ -80,7 +81,7 @@ class InventoryPersistenceAdapterImplTest {
         @Test
         void test1() {
             // when
-            final Inventory result = sut.decreaseStock(nonExistingItemId, 1L);
+            final Inventory result = sut.decreaseStock(nonExistingItemId, quantity);
 
             // then
             assertNull(result);
@@ -90,12 +91,12 @@ class InventoryPersistenceAdapterImplTest {
         @Test
         void test2() {
             // when
-            final Inventory result = sut.decreaseStock(existingItemId, 1L);
+            final Inventory result = sut.decreaseStock(existingItemId, quantity);
 
             // then
             assertNotNull(result);
 
-            long expectedStock = stock - 1;
+            long expectedStock = stock - quantity;
             assertEquals(expectedStock, result.getStock());
         }
     }
