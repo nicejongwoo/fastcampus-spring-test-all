@@ -61,9 +61,10 @@ public class InventoryPersistenceAdapterImpl implements InventoryPersistenceAdap
             entity = mapToEntity(inventory);
         }
 
-//        entity.setStock(inventory.getStock());
+        final Long nextStock = inventoryRedisRepository.setStock(inventory.getItemId(),
+                inventory.getStock());
 
-        return mapToDomain(inventoryJpaRepository.save(entity), 0L);
+        return mapToDomain(inventoryJpaRepository.save(entity), nextStock);
     }
 
     private @NotNull InventoryEntity mapToEntity(@NotNull Inventory inventory) {
