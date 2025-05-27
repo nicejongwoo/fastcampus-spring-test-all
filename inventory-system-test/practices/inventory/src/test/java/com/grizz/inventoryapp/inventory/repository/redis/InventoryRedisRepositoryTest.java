@@ -12,8 +12,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Import(InventoryRedisRepositoryImpl.class)
@@ -110,13 +109,24 @@ public class InventoryRedisRepositoryTest {
         @DisplayName("itemId를 갖는 inventory가 없다면, false를 반환한다")
         @Test
         void test1() {
-            throw new NotImplementedTestException();
+            // when
+            final Boolean result = sut.deleteStock(nonExistingItemId);
+
+            // then
+            assertFalse(result);
         }
 
         @DisplayName("itemId를 갖는 inventory가 있다면, stock을 삭제하고 true를 반환한다")
         @Test
         void test2() {
-            throw new NotImplementedTestException();
+            // when
+            final Boolean result = sut.deleteStock(existingItemId);
+
+            // then
+            assertTrue(result);
+
+            final Long keySize = redisTemplate.getConnectionFactory().getConnection().serverCommands().dbSize();
+            assertEquals(0, keySize);
         }
     }
 
