@@ -5,21 +5,37 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class InventoryRedisRepositoryTest {
+
+    InventoryRedisRepository sut;
+
+    final String existingItemId = "1";
+    final String nonExistingItemId = "2";
+    final Long stock = 100L;
 
     @Nested
     class GetStock {
         @DisplayName("itemId를 갖는 inventory가 없다면, null을 반환한다")
         @Test
         void test1() {
-            throw new NotImplementedTestException();
+            // given
+            final Long result = sut.getStock(nonExistingItemId);
+
+            // when
+            assertNull(result);
         }
 
         @DisplayName("itemId를 갖는 inventory가 있다면, stock을 반환한다")
         @Test
         void test2() {
-            throw new NotImplementedTestException();
+            // given
+            final Long result = sut.getStock(existingItemId);
+
+            // when
+            assertEquals(stock, result);
         }
     }
 
