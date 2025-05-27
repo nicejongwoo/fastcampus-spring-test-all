@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class InventoryRedisRepositoryImpl implements InventoryRedisRepository{
 
@@ -26,7 +28,7 @@ public class InventoryRedisRepositoryImpl implements InventoryRedisRepository{
 
     @Override
     public @NotNull Long decreaseStock(@NotNull String itemId, @NotNull Long quantity) {
-        return 0L;
+        return Objects.requireNonNull(redisTemplate.opsForValue().decrement(key(itemId), quantity));
     }
 
     @Override
