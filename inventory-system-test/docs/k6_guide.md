@@ -3,6 +3,11 @@
 ## 1. k6 설치하기
 
 https://k6.io/docs/get-started/installation
+또는 brew를 사용하여 설치할 수 있습니다.
+
+```shell
+brew install k6
+```
 
 > [!NOTE]
 >
@@ -24,24 +29,50 @@ k6 run sample.js
 ## 4. k6 결과 확인하기
 
 ```
-     data_received..................: 1.5 MB 92 kB/s
-     data_sent......................: 16 kB  968 B/s
-     http_req_blocked...............: avg=35.42ms  min=1µs      med=9µs      max=450.01ms p(90)=14µs     p(95)=439.83ms
-     http_req_connecting............: avg=525.12µs min=0s       med=0s       max=11.11ms  p(90)=0s       p(95)=4.91ms  
-     http_req_duration..............: avg=214.15ms min=195.02ms med=203.47ms max=411.08ms p(90)=211.73ms p(95)=355.3ms 
-       { expected_response:true }...: avg=214.15ms min=195.02ms med=203.47ms max=411.08ms p(90)=211.73ms p(95)=355.3ms 
-     http_req_failed................: 0.00%  ✓ 0        ✗ 125 
-     http_req_receiving.............: avg=11.07ms  min=31µs     med=132µs    max=202.76ms p(90)=315.6µs  p(95)=153.71ms
-     http_req_sending...............: avg=37.59µs  min=6µs      med=34µs     max=405µs    p(90)=56.8µs   p(95)=66.79µs 
-     http_req_tls_handshaking.......: avg=33.31ms  min=0s       med=0s       max=424.3ms  p(90)=0s       p(95)=413.61ms
-     http_req_waiting...............: avg=203.03ms min=194.84ms med=202.15ms max=213.34ms p(90)=210.48ms p(95)=211.27ms
-     http_reqs......................: 125    7.710633/s
-     iteration_duration.............: avg=1.25s    min=1.19s    med=1.2s     max=1.66s    p(90)=1.39s    p(95)=1.64s   
-     iterations.....................: 125    7.710633/s
-     vus............................: 5      min=5      max=10
-     vus_max........................: 10     min=10     max=10
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: sample.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 10 max VUs, 1m0s max duration (incl. graceful stop):
+              * default: 10 looping VUs for 30s (gracefulStop: 30s)
 
 
+
+  █ TOTAL RESULTS 
+
+    checks_total.......................: 253     8.129585/s
+    checks_succeeded...................: 100.00% 253 out of 253
+    checks_failed......................: 0.00%   0 out of 253
+
+    ✓ status is 200
+
+    HTTP
+    http_req_duration.......................................................: avg=188.59ms min=175.47ms med=192.04ms max=245.54ms p(90)=197.27ms p(95)=198.58ms
+      { expected_response:true }............................................: avg=188.59ms min=175.47ms med=192.04ms max=245.54ms p(90)=197.27ms p(95)=198.58ms
+    http_req_failed.........................................................: 0.00%  0 out of 253
+    http_reqs...............................................................: 253    8.129585/s
+
+    EXECUTION
+    iteration_duration......................................................: avg=1.2s     min=1.17s    med=1.19s    max=1.63s    p(90)=1.19s    p(95)=1.2s    
+    iterations..............................................................: 253    8.129585/s
+    vus.....................................................................: 3      min=3        max=10
+    vus_max.................................................................: 10     min=10       max=10
+
+    NETWORK
+    data_received...........................................................: 763 kB 25 kB/s
+    data_sent...............................................................: 18 kB  591 B/s
+
+
+
+
+running (0m31.1s), 00/10 VUs, 253 complete and 0 interrupted iterations
+default ✓ [======================================] 10 VUs  30s
 ```
 
 **http_reqs**: 전체 요청 수 (위에서는 125번)
