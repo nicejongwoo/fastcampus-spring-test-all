@@ -64,3 +64,15 @@ export default function() {
  *     ✗ should shave item_id 1
  *       ↳  99% — ✓ 34803 / ✗ 19
  */
+
+/**
+ *   █ TOTAL RESULTS (개선 후)
+ *
+ *     checks_total.......................: 113757  5619.485309/s
+ *     checks_succeeded...................: 100.00% 113757 out of 113757
+ *     checks_failed......................: 0.00%   0 out of 113757
+ *
+ *     ✓ status is 200
+ *     ✓ should shave item_id 1
+ *     ✓ should shave stock >= 0
+ */
