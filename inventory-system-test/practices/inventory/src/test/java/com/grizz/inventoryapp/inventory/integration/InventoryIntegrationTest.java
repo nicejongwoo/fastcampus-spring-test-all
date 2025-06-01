@@ -26,6 +26,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertDecreasedEventEquals;
+import static com.grizz.inventoryapp.test.assertion.Assertions.assertUpdatedEventEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -171,7 +172,8 @@ public class InventoryIntegrationTest {
         successGetStock(existingItemId, stock);
 
         // 2. 재고 1000개를 차감하고 실패한다.
-        final Long quantity = 1000L;
+        long newStock = 1000L;
+        final Long quantity = newStock;
         final String requestBody = String.format("{\"stock\": %d}", quantity);
 
         mockMvc.perform(
@@ -180,10 +182,14 @@ public class InventoryIntegrationTest {
                                 .content(requestBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.item_id").value(existingItemId))
-                .andExpect(jsonPath("$.data.stock").value(1000L));
+                .andExpect(jsonPath("$.data.stock").value(newStock));
 
         // 3. 재고를 조회하고 100개인 것을 확인한다.
-        successGetStock(existingItemId, 1000L);
+        successGetStock(existingItemId, newStock);
+
+        // 4. 재고 수정 이벤트 1번 발행된 것을 확인한다.
+        final Message<byte[]> result = outputDestination.receive(1000, "inventory-out-0");
+        assertUpdatedEventEquals(result, existingItemId, newStock);
     }
 
     @DisplayName("재고 차감, 수정 종합")
@@ -223,6 +229,8 @@ public class InventoryIntegrationTest {
 
         // 5. 재고를 조회하고 500개인 것을 확인한다.
         successGetStock(existingItemId, newStock);
+
+        // 6. 재고 차감 이벤트 7번, 재고 수정 이벤트 1번 발행된 것을 확인한다.
     }
 
     private void successGetStock(String itemId, Long stock) throws Exception {
