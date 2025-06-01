@@ -12,6 +12,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-undertow")
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.data.redis)
+    implementation(Spring.cloud.stream.stream)
 
     implementation("mysql:mysql-connector-java:_")
 
@@ -33,6 +34,6 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1") // spring boot 3.4.X 호환
     }
 }

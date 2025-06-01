@@ -1,5 +1,6 @@
 package com.grizz.inventoryapp.inventory.repository;
 
+import com.grizz.inventoryapp.inventory.config.StreamTestConfig;
 import com.grizz.inventoryapp.inventory.service.event.InventoryDecreasedEvent;
 import com.grizz.inventoryapp.inventory.service.event.InventoryEvent;
 import com.grizz.inventoryapp.inventory.service.event.InventoryEventPublisher;
@@ -7,6 +8,9 @@ import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.messaging.Message;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
@@ -18,9 +22,13 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
+@ImportAutoConfiguration(StreamTestConfig.class)
 public class InventoryEventPublisherTest {
+    @Autowired
     InventoryEventPublisher sut;
 
+    @Autowired
     OutputDestination outputDestination;
 
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -47,8 +55,8 @@ public class InventoryEventPublisherTest {
             final JsonNode json = objectMapper.readTree(payload);
             assertEquals("InventoryDecreased", json.get("type").asText());
             assertEquals(itemId, json.get("item_id").asText());
-            assertEquals(quantity, json.get("quantity").asText());
-            assertEquals(stock, json.get("stock").asText());
+            assertEquals(quantity, json.get("quantity").asLong());
+            assertEquals(stock, json.get("stock").asLong());
 
             final String messageKey = result.getHeaders().get(InventoryEventPublisher.MESSAGE_KEY, String.class);
             assertEquals(itemId, messageKey);
