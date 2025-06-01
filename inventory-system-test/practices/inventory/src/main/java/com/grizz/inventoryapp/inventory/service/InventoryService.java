@@ -1,6 +1,8 @@
 package com.grizz.inventoryapp.inventory.service;
 
 import com.grizz.inventoryapp.inventory.service.domain.Inventory;
+import com.grizz.inventoryapp.inventory.service.event.InventoryDecreasedEvent;
+import com.grizz.inventoryapp.inventory.service.event.InventoryEventPublisher;
 import com.grizz.inventoryapp.inventory.service.exception.InsufficientStockException;
 import com.grizz.inventoryapp.inventory.service.exception.InvalidDecreaseQuantityException;
 import com.grizz.inventoryapp.inventory.service.exception.InvalidStockException;
@@ -8,7 +10,6 @@ import com.grizz.inventoryapp.inventory.service.exception.ItemNotFoundException;
 import com.grizz.inventoryapp.inventory.service.persistence.InventoryPersistenceAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class InventoryService {
 
     private final InventoryPersistenceAdapter inventoryAdapter;
-    private final DateTimeProvider auditDateTimeProvider;
+    private final InventoryEventPublisher inventoryEventPublisher;
 
-    public InventoryService(InventoryPersistenceAdapter inventoryAdapter, DateTimeProvider auditDateTimeProvider) {
+    public InventoryService(InventoryPersistenceAdapter inventoryAdapter, InventoryEventPublisher inventoryEventPublisher) {
         this.inventoryAdapter = inventoryAdapter;
-        this.auditDateTimeProvider = auditDateTimeProvider;
+        this.inventoryEventPublisher = inventoryEventPublisher;
     }
 
     public @Nullable Inventory findByItemId(@NotNull String itemId) {
@@ -53,6 +54,9 @@ public class InventoryService {
         if (updatedInventory == null) {
             throw new ItemNotFoundException();
         }
+
+        InventoryDecreasedEvent even = new InventoryDecreasedEvent(itemId, quantity, updatedInventory.getStock());
+        inventoryEventPublisher.publish(even);
 
         return updatedInventory;
     }
