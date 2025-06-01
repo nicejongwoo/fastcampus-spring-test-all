@@ -231,6 +231,12 @@ public class InventoryIntegrationTest {
         successGetStock(existingItemId, newStock);
 
         // 6. 재고 차감 이벤트 7번, 재고 수정 이벤트 1번 발행된 것을 확인한다.
+        Long preStock = 100L;
+        for (int i = 0; i < 7; i++) {
+            preStock -= quantity;
+            final Message<byte[]> result = outputDestination.receive(1000, "inventory-out-0");
+            assertDecreasedEventEquals(result, existingItemId, quantity, preStock);
+        }
     }
 
     private void successGetStock(String itemId, Long stock) throws Exception {
