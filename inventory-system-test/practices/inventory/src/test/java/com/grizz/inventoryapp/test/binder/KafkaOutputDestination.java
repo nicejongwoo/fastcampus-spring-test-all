@@ -25,9 +25,10 @@ public class KafkaOutputDestination {
     @Value("${spring.cloud.stream.kafka.binder.brokers}")
     private String brokers;
 
-    public Message<byte[]> receive(long timeout, @NotNull String destination) {
+    public @NotNull Message<byte[]> receive(long timeout,
+                                            @NotNull String destination) {
         ConsumerRecord<String, String> record = getOneRecord(brokers,
-                "inventory-out-0",
+                "inventory-group-1",
                 "inventory",
                 0,
                 false,
