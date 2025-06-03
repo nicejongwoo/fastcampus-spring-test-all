@@ -3,6 +3,7 @@ package com.grizz.inventoryapp.inventory.integration;
 import com.grizz.inventoryapp.inventory.config.StreamTestConfig;
 import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.repository.redis.InventoryRedisRepository;
+import com.grizz.inventoryapp.test.binder.KafkaOutputDestination;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +13,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
@@ -62,7 +62,7 @@ public class InventoryIntegrationTest {
     private InventoryRedisRepository inventoryRedisRepository;
 
     @Autowired
-    private OutputDestination outputDestination;
+    private KafkaOutputDestination outputDestination;
 
     @BeforeEach
     void setUp() {

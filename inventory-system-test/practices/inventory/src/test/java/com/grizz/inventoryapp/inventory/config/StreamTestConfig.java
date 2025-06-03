@@ -1,8 +1,6 @@
 package com.grizz.inventoryapp.inventory.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
-import org.springframework.context.annotation.Import;
 
 /**
  * Spring Cloud Stream 4.x에서 spring-cloud-stream-test-binder는
@@ -12,6 +10,5 @@ import org.springframework.context.annotation.Import;
  * 아래 적용 후 Could not autowire. No beans of 'OutputDestination' type found. 에러 해결
  */
 @TestConfiguration
-@Import(TestChannelBinderConfiguration.class)
 public class StreamTestConfig {
 }

@@ -27,9 +27,6 @@ dependencies {
 
     // archUnit
     testImplementation("com.tngtech.archunit:archunit-junit5:_")
-
-    // spring cloud stream
-    testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
 }
 
 dependencyManagement {
