@@ -13,6 +13,7 @@ dependencies {
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.data.redis)
     implementation(Spring.cloud.stream.stream)
+    implementation(Spring.cloud.stream.binderKafka)
 
     implementation("mysql:mysql-connector-java:_")
 
@@ -24,6 +25,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
+    testImplementation("org.testcontainers:kafka")
 
     // archUnit
     testImplementation("com.tngtech.archunit:archunit-junit5:_")

@@ -13,15 +13,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
 
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertDecreasedEventEquals;
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertUpdatedEventEquals;
 
+@ActiveProfiles("kafka-binder-test")
+@Testcontainers
 @SpringBootTest
 @ImportAutoConfiguration(StreamTestConfig.class)
 public class InventoryEventPublisherTest {
+
+    @Container
+    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.6.1"))
+            .withKraft()
+            .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+            .withEnv("KAFKA_CREATE_TOPICS", "inventory");
+
+    @DynamicPropertySource
+    static void setDatasourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.cloud.stream.kafka.binder.brokers", kafkaContainer::getBootstrapServers);
+    }
+
     @Autowired
     InventoryEventPublisher sut;
 
