@@ -23,9 +23,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertDecreasedEventEquals;
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertUpdatedEventEquals;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Testcontainers
 @Transactional
-@ActiveProfiles("integration-test2") // test 용 컨테이너 사용
+@ActiveProfiles(profiles = {"integration-test2", "kafka-binder-test"}) // test 용 컨테이너 사용
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 테스트 환경에서 h2 데이터베이스를 자동으로 사용하지 않도록 설정
 @Sql(
         scripts = {"classpath:schema.sql", "classpath:data.sql"}, // 순서 중요
@@ -59,12 +61,19 @@ public class AnnotationInventoryIntegrationTest {
     private static final GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.2")
             .withExposedPorts(6379);
 
+    @Container
+    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.6.1"))
+            .withKraft()
+            .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+            .withEnv("KAFKA_CREATE_TOPICS", "inventory");
+
     @DynamicPropertySource
     static void setDatasourceProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", mySQLContainer::getUsername);
         registry.add("spring.datasource.password", mySQLContainer::getPassword);
         registry.add("srpgin.data.redis.port", () -> redisContainer.getMappedPort(6379));
+        registry.add("spring.cloud.stream.kafka.binder.brokers", kafkaContainer::getBootstrapServers);
     }
 
     @Autowired
