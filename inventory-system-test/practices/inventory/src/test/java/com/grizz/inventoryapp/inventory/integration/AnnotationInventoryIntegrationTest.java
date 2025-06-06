@@ -4,10 +4,7 @@ import com.grizz.inventoryapp.inventory.config.StreamTestConfig;
 import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.repository.redis.InventoryRedisRepository;
 import com.grizz.inventoryapp.test.binder.KafkaOutputDestination;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -35,6 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Tag("integration")
 @Testcontainers
 @Transactional
 @ActiveProfiles(profiles = {"integration-test2", "kafka-binder-test"}) // test 용 컨테이너 사용
