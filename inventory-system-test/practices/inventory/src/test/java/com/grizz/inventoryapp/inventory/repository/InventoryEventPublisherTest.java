@@ -1,6 +1,5 @@
 package com.grizz.inventoryapp.inventory.repository;
 
-import com.grizz.inventoryapp.inventory.config.StreamTestConfig;
 import com.grizz.inventoryapp.inventory.service.event.InventoryDecreasedEvent;
 import com.grizz.inventoryapp.inventory.service.event.InventoryEvent;
 import com.grizz.inventoryapp.inventory.service.event.InventoryEventPublisher;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,10 +26,9 @@ import static com.grizz.inventoryapp.test.assertion.Assertions.assertDecreasedEv
 import static com.grizz.inventoryapp.test.assertion.Assertions.assertUpdatedEventEquals;
 
 @Tag("integration")
-@ActiveProfiles("kafka-binder-test")
 @Testcontainers
+@ActiveProfiles("kafka-binder-test")
 @SpringBootTest
-@ImportAutoConfiguration(StreamTestConfig.class)
 public class InventoryEventPublisherTest {
 
     @Container

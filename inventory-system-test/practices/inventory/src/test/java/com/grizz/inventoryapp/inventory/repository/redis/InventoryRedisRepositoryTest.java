@@ -1,6 +1,5 @@
 package com.grizz.inventoryapp.inventory.repository.redis;
 
-import com.grizz.inventoryapp.test.exception.NotImplementedTestException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
@@ -15,8 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration")
-@Import(InventoryRedisRepositoryImpl.class)
 @Testcontainers
+@Import(InventoryRedisRepositoryImpl.class)
 @DataRedisTest
 public class InventoryRedisRepositoryTest {
 

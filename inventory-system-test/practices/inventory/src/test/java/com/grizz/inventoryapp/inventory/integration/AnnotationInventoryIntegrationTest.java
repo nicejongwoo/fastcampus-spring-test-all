@@ -1,12 +1,10 @@
 package com.grizz.inventoryapp.inventory.integration;
 
-import com.grizz.inventoryapp.inventory.config.StreamTestConfig;
 import com.grizz.inventoryapp.inventory.controller.consts.ErrorCodes;
 import com.grizz.inventoryapp.inventory.repository.redis.InventoryRedisRepository;
 import com.grizz.inventoryapp.test.binder.KafkaOutputDestination;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ImportAutoConfiguration(StreamTestConfig.class)
 public class AnnotationInventoryIntegrationTest {
 
     @Container
