@@ -70,7 +70,7 @@ public class AnnotationInventoryIntegrationTest {
         registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", mySQLContainer::getUsername);
         registry.add("spring.datasource.password", mySQLContainer::getPassword);
-        registry.add("srpgin.data.redis.port", () -> redisContainer.getMappedPort(6379));
+        registry.add("spring.data.redis.port", () -> redisContainer.getMappedPort(6379));
         registry.add("spring.cloud.stream.kafka.binder.brokers", kafkaContainer::getBootstrapServers);
     }
 

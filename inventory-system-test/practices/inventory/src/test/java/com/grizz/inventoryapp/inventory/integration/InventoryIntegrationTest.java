@@ -57,7 +57,7 @@ public class InventoryIntegrationTest {
 
     @DynamicPropertySource
     static void setDatasourceProperties(DynamicPropertyRegistry registry) {
-        registry.add("srpgin.data.redis.port", () -> redisContainer.getMappedPort(6379));
+        registry.add("spring.data.redis.port", () -> redisContainer.getMappedPort(6379));
         registry.add("spring.cloud.stream.kafka.binder.brokers", kafkaContainer::getBootstrapServers);
     }
 
