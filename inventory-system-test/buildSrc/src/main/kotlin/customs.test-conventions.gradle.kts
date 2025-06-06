@@ -8,7 +8,11 @@ repositories {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (EnvUtils.isAct()) {
+            excludeTags("integration") // act 에서는 도커 컨테이너 테스트가 안되어서 제외
+        }
+    }
 
     testLogging {
         events("passed", "skipped", "failed")
