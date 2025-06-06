@@ -8,11 +8,11 @@ on:
       - main
 
 jobs:
-  test-and-analyze:
-    name: Test and Analyze
+  inventory-test-and-analyze:
+    name: Inventory Test and Analyze
     runs-on: ubuntu-22.04
     env:
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -XX:MaxMetaspaceSize=512m' -Dorg.gradle.parallel=true"
+      GRADLE_OPTS: "-Xmx2g -XX:MaxMetaspaceSize=512m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
     steps: # action or script to run
       - uses: actions/checkout@v4
         with:
@@ -24,9 +24,10 @@ jobs:
           cache: gradle
       - name: Run test
         run: |
-          ./inventory-system-test/gradlew -p "practices/inventory" test
-  deploy:
-    name: Deploy
+          cd inventory-system-test
+          ./gradlew -p "practices/inventory" test
+  inventory-deploy:
+    name: Inventory Deploy
     runs-on: ubuntu-22.04
     needs: test-and-analyze
     steps:
