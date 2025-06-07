@@ -27,4 +27,7 @@ jobs:
         run: |
           cd inventory-system-test
           ./gradlew -p "practices/inventory" test jacocoTestReport
-      - run: ls -al practices/inventory/build/reports/jacoco/test
+      - name: Show jacoco report output
+        run: |
+          cd inventory-system-test
+          ls -al practices/inventory/build/reports/jacoco/test

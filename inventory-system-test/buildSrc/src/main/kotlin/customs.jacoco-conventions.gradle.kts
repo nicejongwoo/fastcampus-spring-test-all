@@ -10,6 +10,8 @@ jacoco {
 
 // 확인용: 태스크 목록 출력
 // ./gradlew tasks --all | grep jacoco
+// gradle
+// ./gradlew -p "practices/inventory" clean test jacocoTestReport
 tasks.jacocoTestReport {
     reports {
         html.required.set(EnvUtils.isLocal())
