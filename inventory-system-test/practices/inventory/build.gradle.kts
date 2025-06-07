@@ -2,6 +2,7 @@ plugins {
     id("customs.java-conventions")
     id("customs.test-conventions")
     id("customs.spring-conventions")
+    id("customs.jacoco-conventions")
 }
 
 dependencies {
