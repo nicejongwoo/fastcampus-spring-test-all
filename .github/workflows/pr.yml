@@ -31,3 +31,11 @@ jobs:
         run: |
           cd inventory-system-test
           ls -al practices/inventory/build/reports/jacoco/test
+      - name: Run sonar
+        if: ${{ !env.ACT }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd inventory-system-test
+          ./gradlew -p "practices/inventory" sonar
+      

@@ -26,6 +26,13 @@ jobs:
         run: |
           cd inventory-system-test
           ./gradlew -p "practices/inventory" test jacocoTestReport
+      - name: Run sonar
+        if: ${{ !env.ACT }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd inventory-system-test
+          ./gradlew -p "practices/inventory" sonar
   inventory-deploy:
     name: Inventory Deploy
     runs-on: ubuntu-22.04
