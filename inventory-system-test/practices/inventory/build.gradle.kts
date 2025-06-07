@@ -3,6 +3,7 @@ plugins {
     id("customs.test-conventions")
     id("customs.spring-conventions")
     id("customs.jacoco-conventions")
+    id("customs.sonar-conventions")
 }
 
 dependencies {
@@ -38,5 +39,12 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1") // spring boot 3.4.X 호환
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "fastcampus-spring-test-all")
+        property("sonar.projectName", "fastcampus-spring-test-all")
     }
 }
