@@ -1,0 +1,47 @@
+name: Local Pull Request (for act only)
+
+on:
+  workflow_dispatch:  # 수동 실행만 허용 (CI에서 자동 실행 방지용)
+  push:
+    branches-ignore:
+      - '**'  # 어떤 브랜치에도 반응하지 않음
+
+jobs:
+  local-inventory-sonarqube:
+    name: Local SonarQube Analysis
+    runs-on: ubuntu-22.04
+    env:
+      GRADLE_OPTS: "-Xmx2g -XX:MaxMetaspaceSize=512m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: gradle
+
+      - name: Run test and jacoco
+        run: |
+          cd inventory-system-test
+          ./gradlew -p "practices/inventory" test jacocoTestReport
+
+      - name: Show jacoco report output
+        run: |
+          cd inventory-system-test
+          ls -al practices/inventory/build/reports/jacoco/test
+
+      - name: Print SONAR_TOKEN (debug only)
+        run: echo "SONAR_TOKEN=${{ env.SONAR_TOKEN }}"
+
+      - name: Run local SonarQube
+        env:
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+        run: |
+          cd inventory-system-test
+          ./gradlew -p "practices/inventory" sonar \
+            -Dsonar.host.url=http://localhost:9000

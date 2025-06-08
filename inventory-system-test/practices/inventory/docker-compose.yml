@@ -29,3 +29,21 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+  sonarqube:
+    image: sonarqube:community
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true  # 로컬 개발용 (권장)
+  sonarqube-init:
+    image: debian:bullseye-slim
+    depends_on:
+      - sonarqube
+    volumes:
+      - ./init:/init
+      - ./../../../:/workspace  # 추가: 현재 프로젝트 루트를 컨테이너에 마운트
+    entrypoint: >
+      sh -c "apt-get update &&
+             apt-get install -y curl grep &&
+             chmod +x /init/init-sonarqube.sh &&
+             /init/init-sonarqube.sh"
